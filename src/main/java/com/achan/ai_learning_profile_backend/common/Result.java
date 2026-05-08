@@ -1,7 +1,5 @@
 package com.achan.ai_learning_profile_backend.common;
-/**
- * 把任何类型的数据（T），统一打包成 Result 的格式返回
- */
+
 public class Result<T> {
 
     private Integer code;
@@ -17,12 +15,12 @@ public class Result<T> {
         this.data = data;
     }
 
-    public static <T> Result<T> success(T data) {
-        return new Result<>(200, "success", data);
-    }
-
     public static <T> Result<T> success() {
         return new Result<>(200, "success", null);
+    }
+
+    public static <T> Result<T> success(T data) {
+        return new Result<>(200, "success", data);
     }
 
     public static <T> Result<T> error(String message) {
@@ -32,7 +30,6 @@ public class Result<T> {
     public static <T> Result<T> error(Integer code, String message) {
         return new Result<>(code, message, null);
     }
-
 
     public Integer getCode() {
         return code;

@@ -1,13 +1,21 @@
-package com.achan.ai_learning_profile_backend.entity;
-
-import java.time.LocalDateTime;
-
 /**
  * 数据库表的直接映射
  * 最底层的数据形态
  */
+package com.achan.ai_learning_profile_backend.entity;
+
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
+import com.baomidou.mybatisplus.annotation.TableName;
+
+import java.time.LocalDateTime;
+
+@TableName("`user`")
 public class User {
 
+    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
     private String username;
     private String password;
@@ -15,8 +23,13 @@ public class User {
     private String email;
     private String role;
     private Integer status;
+
+    @TableField("create_time")
     private LocalDateTime createTime;
+    @TableField("update_time")
     private LocalDateTime updateTime;
+    @TableField("is_deleted")
+    @TableLogic
     private Integer isDeleted;
 
     public Long getId() {

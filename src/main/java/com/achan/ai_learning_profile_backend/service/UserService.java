@@ -1,65 +1,31 @@
 package com.achan.ai_learning_profile_backend.service;
+
 import com.achan.ai_learning_profile_backend.dto.UserCreateRequest;
+import com.achan.ai_learning_profile_backend.dto.UserRegisterRequest;
+import com.achan.ai_learning_profile_backend.dto.UserUpdateRequest;
 import com.achan.ai_learning_profile_backend.entity.User;
-import com.achan.ai_learning_profile_backend.repository.UserRepository;
 import com.achan.ai_learning_profile_backend.vo.UserVO;
-import org.springframework.stereotype.Service;
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.achan.ai_learning_profile_backend.common.PageResult;
+import com.achan.ai_learning_profile_backend.dto.UserLoginRequest;
 
 import java.util.List;
 
-/**
- * 用户业务层
- * 负责处理用户相关的业务逻辑
- */
-@Service
-public class UserService {
+public interface UserService extends IService<User> {
 
-    private final UserRepository userRepository;
+    List<UserVO> listUsers();
 
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    UserVO getUserById(Long id);
 
-    public List<UserVO> listUsers() {
-        List<User> users = userRepository.findAll();
+    void createUser(UserCreateRequest request);
 
-        return users.stream()
-                .map(this::toUserVO)
-                .toList();
-    }
+    UserVO register(UserRegisterRequest request);
 
-    private UserVO toUserVO(User user) {
-        UserVO userVO = new UserVO();
-        userVO.setId(user.getId());
-        userVO.setUsername(user.getUsername());
-        userVO.setNickname(user.getNickname());
-        userVO.setEmail(user.getEmail());
-        userVO.setRole(user.getRole());
-        userVO.setStatus(user.getStatus());
-        userVO.setCreateTime(user.getCreateTime());
-        return userVO;
-    }
+    UserVO updateUser(Long id, UserUpdateRequest request);
 
+    void deleteUser(Long id);
 
-    public UserVO getUserById(Long id) {
-        User user = userRepository.findById(id);
+    PageResult<UserVO> pageUsers(Long page, Long size);
 
-        if (user == null) {
-            return null;
-        }
-
-        return toUserVO(user);
-    }
-
-    public void createUser(UserCreateRequest request) {
-        User user = new User();
-        user.setUsername(request.getUsername());
-        user.setPassword(request.getPassword());
-        user.setNickname(request.getNickname());
-        user.setEmail(request.getEmail());
-        user.setRole("USER");
-        user.setStatus(1);
-
-        userRepository.save(user);
-    }
+    UserVO login(UserLoginRequest request);
 }
